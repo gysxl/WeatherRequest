@@ -23,6 +23,7 @@
 @property (nonatomic,retain)UILabel *speedLable;
 @property (nonatomic,retain)UILabel *pressLable;
 @property (nonatomic,retain)UILabel *pmLable;
+@property (nonatomic,strong)UILabel *pmQualityLable;
 @property (nonatomic,retain)NSDictionary *weatherInfoNow;
 @property (nonatomic,retain)NSDictionary *weatherInfoDay1;
 @property (nonatomic,retain)NSDictionary *weatherInfoDay2;
@@ -31,8 +32,8 @@
 @property (nonatomic,retain)NSDictionary *weatherInfoDay5;
 @property (nonatomic,retain)NSDictionary *weatherInfoDay6;
 @property (nonatomic,retain)NSNumber *pmInfoStr;
+@property (nonatomic,strong)NSString *pmQuality;
 @property (nonatomic, strong) NSString *locationInfo;
-
 @property (nonatomic, strong) UILabel *testLabel;
 
 @end
@@ -102,6 +103,10 @@
     self.pmLable.textColor = [UIColor clearColor];
     self.pmLable.font = [UIFont fontWithName:@"HelveticaNeue" size:18];
     
+    self.pmQualityLable = [[UILabel alloc] initWithFrame:CGRectMake(0, 100, 200, 40)];
+    self.pmQualityLable.textColor =[UIColor clearColor];
+    self.pmQualityLable.font = [UIFont fontWithName:@"HelveticaNeue" size:18];
+    
     self.speedLable = [[UILabel alloc] initWithFrame:CGRectMake(0, 100, 200, 40)];
     self.speedLable.textColor = [UIColor clearColor];
     self.speedLable.font = [UIFont fontWithName:@"HelveticaNeue" size:18];
@@ -113,14 +118,7 @@
     [self.view addSubview:self.pressLable];
     [self.view addSubview:self.pmLable];
     [self.view addSubview:self.speedLable];
-    
-    
-//    self.testLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 64, 100, 40)];
-//    self.testLabel.backgroundColor = [UIColor redColor];
-//    self.testLabel.textColor = [UIColor whiteColor];
-//    self.testLabel.font = [UIFont systemFontOfSize:24];
-//    self.testLabel.text = @"test";
-//    [self.view addSubview:self.testLabel];
+    [self.view addSubview:self.pmQualityLable];
     
 }
 
@@ -155,6 +153,19 @@
     self.pmInfoStr = weatherInfoDic[@"pm2.5"];
     NSString *pmStr = [self.pmInfoStr stringValue];
     self.testLabel.text = pmStr;
+    //获取空气质量分级描述
+    if ([self.pmInfoStr intValue]<= 50 && [self.pmInfoStr intValue]>0){
+        self.pmQuality = @"优";
+    }else if ([self.pmInfoStr intValue] >50 && [self.pmInfoStr intValue] <=100){
+        self.pmQuality = @"良好";
+    }else if ([self.pmInfoStr intValue] >100 && [self.pmInfoStr intValue] <=200){
+        self.pmQuality = @"轻度污染";
+    }else if ([self.pmInfoStr intValue] >200 && [self.pmInfoStr intValue] <=300){
+        self.pmQuality = @"中度污染";
+    }else if ([self.pmInfoStr intValue] >300){
+        self.pmQuality = @"重度污染";
+    }
+    self.pmQualityLable.text = self.pmQuality;
 //    return ;
     
     if (self.cityName){
@@ -224,12 +235,19 @@
         NSString *pmStr = [self.pmInfoStr stringValue];
         CGRect rectPmInfo = [pmStr cst_rectWithFont:[UIFont fontWithName:@"HelveticaNeue" size:16] height:40];
         
-        self.pmLable.frame = CGRectMake(40, CGRectGetHeight(self.view.bounds)*0.25+30, CGRectGetWidth(rectPmInfo)+20, CGRectGetHeight(rectPmInfo));
+        self.pmLable.frame = CGRectMake(20, CGRectGetHeight(self.view.bounds)*0.25+30, CGRectGetWidth(rectPmInfo)+20, CGRectGetHeight(rectPmInfo));
         self.pmLable.text = pmStr;
         self.pmLable.textColor = [UIColor whiteColor];
         self.pmLable.font = [UIFont fontWithName:@"HelveticaNeue" size:18];
+        
+        //空气质量分级
+        CGRect rectPmQuality = [self.pmQuality cst_rectWithFont:[UIFont fontWithName:@"HelveticaNeue" size:16] height:40];
+        
+        self.pmQualityLable.frame = CGRectMake(CGRectGetWidth(rectPmInfo)+40, CGRectGetHeight(self.view.bounds)*0.25+30, CGRectGetWidth(rectPmQuality)+20, CGRectGetHeight(rectPmQuality));
+        self.pmQualityLable.text = self.pmQuality;
+        self.pmQualityLable.textColor = [UIColor whiteColor];
+        self.pmQualityLable.font = [UIFont fontWithName:@"HelveticaNeue" size:18];
     }
-    
 }
 
 //华氏温度转换为摄氏度
