@@ -12,8 +12,9 @@
 #import "NSString+CSTExtention.h"
 #import "SxlLocationCity.h"
 #import "SXLBaseApi.h"
+#import "SxlCollectionViewCell.h"
 
-@interface ViewController ()<SXLBaseApiDelegate>
+@interface ViewController ()<SXLBaseApiDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 //@property (nonatomic,strong) UIButton *addCityButton;
 @property (nonatomic,retain)UIImageView *bgImgView;
 @property (nonatomic,retain)UIImageView *adviceImgView;
@@ -54,6 +55,7 @@
     
     self.bgImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds),CGRectGetHeight(self.view.bounds))];
 //    self.bgImgView.image = [UIImage imageNamed:@"bg.png"];
+    self.view.backgroundColor = [UIColor clearColor];
     self.bgImgView.image = [UIImage imageNamed:@"clear.png"];
     
 //    SXLCustomView *customView = [[SXLCustomView alloc]initWithFrame:CGRectMake(10, 200, 300,200)];
@@ -119,6 +121,29 @@
     [self.view addSubview:self.pmLable];
     [self.view addSubview:self.speedLable];
     [self.view addSubview:self.pmQualityLable];
+    
+    
+    //设置collectionview
+    //1.初始化layout
+    self.mainCollectionView.backgroundColor = [UIColor whiteColor];
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.headerReferenceSize = CGSizeMake(self.view.frame.size.width, 100);
+    layout.itemSize =CGSizeMake(100, 300);
+    
+    //2.初始化collectionView
+    _mainCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds)*0.5,CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*0.5) collectionViewLayout:layout];
+    [self.view addSubview:self.mainCollectionView];
+    
+    //3.注册collectionViewCell
+    //注意，此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致 均为 cellId
+    [self.mainCollectionView registerClass:[SxlCollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
+    
+    //注册headerView  此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致  均为reusableView
+    [self.mainCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableView"];
+    
+    //4.设置代理
+    self.mainCollectionView.delegate = self;
+    self.mainCollectionView.dataSource = self;
     
 }
 
@@ -294,6 +319,74 @@
 //    [self showWeatherInfo:@{@"pm2.5": @40}];
     
 }
+
+
+#pragma mark collectionView代理方法
+//返回section个数
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
+    return 1;
+}
+
+//每个section的item个数
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return 6;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    SxlCollectionViewCell *cell = (SxlCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
+    cell.botlabel.text = @"测试测试";
+    cell.backgroundColor = [UIColor yellowColor];
+    return cell;
+    
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(60, 160);
+}
+
+//设置每个item的UIEdgeInsets
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(10, 10, 10, 10);
+}
+
+//设置每个item水平间距
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 1;
+}
+//设置每个item垂直间距
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 15;
+}
+
+//通过设置SupplementaryViewOfKind 来设置头部或者底部的view，其中 ReuseIdentifier 的值必须和 注册是填写的一致，本例都为 “reusableView”
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableView" forIndexPath:indexPath];
+    headerView.backgroundColor =[UIColor grayColor];
+    UILabel *label = [[UILabel alloc] initWithFrame:headerView.bounds];
+    label.text = @"未来六天天气情况";
+    label.font = [UIFont systemFontOfSize:20];
+    [headerView addSubview:label];
+    return headerView;
+}
+
+//点击item方法
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    SxlCollectionViewCell *cell = (SxlCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    NSString *msg = cell.botlabel.text;
+    NSLog(@"%@",msg);
+}
+
+
+
 
 #pragma mark - SXLBaseApiDelegate
 

@@ -14,9 +14,9 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        _topImage  = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 70, 70)];
-        _topImage.backgroundColor = [UIColor redColor];
-        [self.contentView addSubview:_topImage];
+//        _topImage  = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 70, 70)];
+//        _topImage.backgroundColor = [UIColor redColor];
+//        [self.contentView addSubview:_topImage];
         
         _botlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, 70, 30)];
         _botlabel.textAlignment = NSTextAlignmentCenter;
@@ -28,5 +28,9 @@
     
     return self;
 }
+
+//- (void)awakeFromNib{
+//    // Initialization code
+//}
 
 @end

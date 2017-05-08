@@ -11,6 +11,7 @@
 #import "SXLLocationDelegate.h"
 
 @interface ViewController : UIViewController <SXLLocationDelegate>
+@property (nonatomic,strong) UICollectionView *mainCollectionView;
 @property (nonatomic, strong) UILabel *selectCityLabel;
 @property (strong,nonatomic)NSString *weatherInfo;
 @property (strong,nonatomic)NSString *cityName;
