@@ -18,15 +18,23 @@
 //        _topImage.backgroundColor = [UIColor redColor];
 //        [self.contentView addSubview:_topImage];
         
-        _botlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, 70, 30)];
-        _botlabel.textAlignment = NSTextAlignmentCenter;
-        _botlabel.textColor = [UIColor blueColor];
-        _botlabel.font = [UIFont systemFontOfSize:15];
-        _botlabel.backgroundColor = [UIColor purpleColor];
+        _botlabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [self.contentView addSubview:_botlabel];
     }
     
     return self;
+}
+
+- (void)layoutSubviews {
+
+    [super layoutSubviews];
+    
+    _botlabel.textAlignment = NSTextAlignmentCenter;
+    _botlabel.textColor = [UIColor blueColor];
+    _botlabel.font = [UIFont systemFontOfSize:15];
+    _botlabel.frame = CGRectMake(10, 80, 70, 30);
+    
+    
 }
 
 //- (void)awakeFromNib{

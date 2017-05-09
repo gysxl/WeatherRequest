@@ -125,14 +125,16 @@
     
     //设置collectionview
     //1.初始化layout
-    self.mainCollectionView.backgroundColor = [UIColor whiteColor];
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.headerReferenceSize = CGSizeMake(self.view.frame.size.width, 100);
+    layout.headerReferenceSize = CGSizeMake(self.view.frame.size.width, 50);
     layout.itemSize =CGSizeMake(100, 300);
     
     //2.初始化collectionView
-    _mainCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds)*0.5,CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*0.5) collectionViewLayout:layout];
+    _mainCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds)-230,CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)*0.5) collectionViewLayout:layout];
     [self.view addSubview:self.mainCollectionView];
+    
+    self.mainCollectionView.backgroundColor = [UIColor clearColor];
+
     
     //3.注册collectionViewCell
     //注意，此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致 均为 cellId
@@ -338,6 +340,7 @@
 {
     SxlCollectionViewCell *cell = (SxlCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
     cell.botlabel.text = @"测试测试";
+    cell.botlabel.textColor = [UIColor redColor];
     cell.backgroundColor = [UIColor yellowColor];
     return cell;
     
@@ -369,7 +372,7 @@
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableView" forIndexPath:indexPath];
-    headerView.backgroundColor =[UIColor grayColor];
+    headerView.backgroundColor =[UIColor clearColor];
     UILabel *label = [[UILabel alloc] initWithFrame:headerView.bounds];
     label.text = @"未来六天天气情况";
     label.font = [UIFont systemFontOfSize:20];

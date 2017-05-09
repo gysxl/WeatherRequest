@@ -11,6 +11,6 @@
 @interface SxlCollectionViewCell : UICollectionViewCell
 @property (strong, nonatomic) UIImageView *topImage;
 
-@property (weak, nonatomic) IBOutlet UILabel *botlabel;
+@property (strong, nonatomic) UILabel *botlabel;
 
 @end
