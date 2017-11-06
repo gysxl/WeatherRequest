@@ -2,7 +2,7 @@
 //  SxlCollectionViewCell.m
 //  WeatherRequest
 //
-//  Created by didi on 2017/1/20.
+//  Created by sxl on 2017/1/20.
 //  Copyright © 2017年 didi. All rights reserved.
 //
 
