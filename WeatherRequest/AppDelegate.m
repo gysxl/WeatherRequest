@@ -8,8 +8,10 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
-
+#import "WeatherRequest-Swift.h"
+#import "WeatherRequest-Bridging-Header.h"
 @interface AppDelegate ()
+@property (strong, nonatomic) MonkeyPaws *paws;
 
 @end
 
@@ -24,6 +26,8 @@
     ViewController *homeViewController = [[ViewController alloc] init];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController];
     self.window.rootViewController = navigationController;
+    self.paws = [[MonkeyPaws alloc] initWithView:self.window tapUIApplication:true];
+    return YES;
     return YES;
 }
 
